@@ -13,16 +13,13 @@
 
     body {
       font-family: 'Inter', sans-serif;
-      background: #f0f4ff;
+      background: #ffffff;
       min-height: 100vh;
       padding: 40px 20px 60px;
       color: #1a3a8f;
     }
 
-    .wrap {
-      max-width: 860px;
-      margin: 0 auto;
-    }
+    .wrap { max-width: 860px; margin: 0 auto; }
 
     h1 {
       font-size: 28px;
@@ -44,11 +41,19 @@
       margin-bottom: 28px;
     }
 
-    .tbl-wrap {
-      overflow-x: auto;
-      border-radius: 0;
-      border: 2px solid #1a3a8f;
+    .save-indicator {
+      text-align: center;
+      font-size: 11px;
+      letter-spacing: 2px;
+      color: #8fa0cc;
+      margin-bottom: 16px;
+      min-height: 16px;
+      transition: color 0.3s;
     }
+    .save-indicator.saved { color: #3a8f5a; }
+
+    /* ── DESKTOP TABLE ── */
+    .tbl-wrap { overflow-x: auto; border: 2px solid #1a3a8f; }
 
     table {
       width: 100%;
@@ -58,26 +63,25 @@
       table-layout: fixed;
     }
 
-    colgroup col.c-waktu   { width: 160px; }
-    colgroup col.c-suhu    { width: 120px; }
-    colgroup col.c-gas     { width: 140px; }
+    colgroup col.c-waktu   { width: 140px; }
+    colgroup col.c-suhu    { width: 110px; }
+    colgroup col.c-gas     { width: 130px; }
     colgroup col.c-catatan { width: auto; }
-    colgroup col.c-act     { width: 72px; }
+    colgroup col.c-act     { width: 64px; }
 
     thead tr { background: #fff; }
     thead th {
       color: #1a3a8f;
       font-weight: 600;
-      font-size: 13px;
+      font-size: 12px;
       padding: 14px 12px;
       text-align: left;
       letter-spacing: 2px;
       border-bottom: 2px solid #1a3a8f;
     }
 
-    tbody tr:nth-child(even) { background: #ffffff; }
-    tbody tr:nth-child(odd)  { background: #ffffff; }
-    tbody tr:hover           { background: #eef1ff; transition: background 0.1s; }
+    tbody tr { background: #fff; }
+    tbody tr:hover { background: #eef1ff; transition: background 0.1s; }
 
     tbody td {
       padding: 8px 10px;
@@ -105,25 +109,9 @@
       box-shadow: 0 0 0 3px rgba(26, 58, 143, 0.12);
     }
 
-    td.time-cell {
-      font-size: 13px;
-      font-weight: 500;
-      color: #1a3a8f;
-      white-space: nowrap;
-    }
-
-    .time-display {
-      display: flex;
-      align-items: center;
-      gap: 4px;
-    }
-
-    .time-text {
-      flex: 1;
-      font-size: 13px;
-      font-weight: 500;
-    }
-
+    td.time-cell { font-size: 13px; font-weight: 500; color: #1a3a8f; white-space: nowrap; }
+    .time-display { display: flex; align-items: center; gap: 4px; }
+    .time-text { flex: 1; font-size: 13px; font-weight: 500; }
     td.suhu-cell input { text-align: center; }
 
     .icon-btn {
@@ -133,7 +121,6 @@
       color: #8fa0cc;
       font-size: 16px;
       padding: 3px 5px;
-      border-radius: 0;
       transition: color 0.15s, background 0.15s;
       display: inline-flex;
       align-items: center;
@@ -141,13 +128,68 @@
     }
     .icon-btn:hover { color: #1a3a8f; background: #d0daff; }
     .icon-btn.del:hover { color: #c0392b; background: #fde8e8; }
+    .act-cell { display: flex; align-items: center; gap: 2px; }
 
-    .act-cell {
-      display: flex;
-      align-items: center;
-      gap: 2px;
+    /* ── MOBILE CARDS ── */
+    .card-list { display: none; }
+
+    .entry-card {
+      border: 2px solid #1a3a8f;
+      background: #fff;
+      margin-bottom: 12px;
     }
 
+    .card-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 10px 12px;
+      border-bottom: 1px solid rgba(26, 58, 143, 0.15);
+      background: #f8f8f8;
+    }
+
+    .card-num { font-size: 11px; font-weight: 600; letter-spacing: 2px; color: #8fa0cc; }
+
+    .card-body { display: grid; grid-template-columns: 1fr 1fr; gap: 0; }
+
+    .card-field {
+      padding: 10px 12px;
+      border-right: 1px solid rgba(26, 58, 143, 0.1);
+      border-bottom: 1px solid rgba(26, 58, 143, 0.1);
+    }
+    .card-field:nth-child(2n) { border-right: none; }
+    .card-field:nth-last-child(-n+2) { border-bottom: none; }
+    .card-field.full { grid-column: 1 / -1; border-right: none; }
+
+    .card-label {
+      font-size: 10px;
+      font-weight: 600;
+      letter-spacing: 2px;
+      color: #8fa0cc;
+      margin-bottom: 6px;
+      text-transform: uppercase;
+    }
+
+    .card-field input[type="text"],
+    .card-field input[type="number"],
+    .card-field input[type="time"] {
+      font-family: 'Inter', sans-serif;
+      font-size: 14px;
+      border: 1px solid #a0b4e8;
+      border-radius: 0;
+      padding: 7px 10px;
+      background: #fff;
+      color: #1a3a8f;
+      width: 100%;
+      outline: none;
+      transition: border-color 0.15s, box-shadow 0.15s;
+    }
+    .card-field input:focus { border-color: #1a3a8f; box-shadow: 0 0 0 3px rgba(26, 58, 143, 0.12); }
+
+    .card-time-display { display: flex; align-items: center; gap: 6px; }
+    .card-time-text { font-size: 14px; font-weight: 500; color: #1a3a8f; flex: 1; }
+
+    /* ── BUTTONS ── */
     .actions {
       display: flex;
       gap: 12px;
@@ -192,22 +234,36 @@
     }
     .chart-btn:hover { background: #1a3a8f; color: #fff; }
 
+    .clear-btn {
+      background: #fff;
+      color: #c0392b;
+      border: 2px solid #c0392b;
+      border-radius: 0;
+      padding: 10px 16px;
+      font-family: 'Inter', sans-serif;
+      font-size: 13px;
+      font-weight: 500;
+      cursor: pointer;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      transition: background 0.15s, color 0.15s;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .clear-btn:hover { background: #c0392b; color: #fff; }
+
+    /* ── CHART ── */
     .chart-section {
       display: none;
       margin-top: 28px;
       border: 2px solid #1a3a8f;
-      border-radius: 0;
       padding: 20px;
       background: #fff;
     }
     .chart-section.visible { display: block; }
 
-    .chart-title {
-      font-size: 15px;
-      font-weight: 600;
-      color: #1a3a8f;
-      margin-bottom: 16px;
-    }
+    .chart-title { font-size: 15px; font-weight: 600; color: #1a3a8f; margin-bottom: 16px; }
 
     .chart-legend {
       display: flex;
@@ -217,20 +273,11 @@
       color: #4a5e9e;
       margin-bottom: 12px;
     }
-    .chart-legend span {
-      display: inline-block;
-      width: 24px;
-      height: 3px;
-      background: #1a3a8f;
-      border-radius: 0;
-    }
+    .chart-legend span { display: inline-block; width: 24px; height: 3px; background: #1a3a8f; }
 
-    .chart-canvas-wrap {
-      position: relative;
-      width: 100%;
-      height: 320px;
-    }
+    .chart-canvas-wrap { position: relative; width: 100%; height: 280px; }
 
+    /* ── FOOTER ── */
     .footer {
       text-align: center;
       margin-top: 32px;
@@ -240,20 +287,28 @@
       letter-spacing: 2px;
       text-transform: lowercase;
     }
-    .footer a {
-      color: #1a3a8f;
-      font-weight: 600;
-      text-decoration: none;
-      letter-spacing: 2px;
-    }
+    .footer a { color: #1a3a8f; font-weight: 600; text-decoration: none; letter-spacing: 2px; }
     .footer a:hover { text-decoration: underline; }
+
+    /* ── RESPONSIVE ── */
+    @media (max-width: 600px) {
+      body { padding: 28px 14px 50px; }
+      h1 { font-size: 18px; letter-spacing: 4px; }
+      .subtitle { font-size: 10px; letter-spacing: 3px; }
+      .tbl-wrap { display: none; }
+      .card-list { display: block; }
+      .actions { flex-direction: column; }
+      .add-btn, .chart-btn, .clear-btn { width: 100%; justify-content: center; }
+    }
   </style>
 </head>
 <body>
   <div class="wrap">
     <h1>TUNGKU AKU SUKSES NANTI</h1>
     <p class="subtitle">sebuah jurnal damkar (dalam membakar keramik)</p>
+    <p class="save-indicator" id="saveIndicator">—</p>
 
+    <!-- DESKTOP TABLE -->
     <div class="tbl-wrap">
       <table id="tbl">
         <colgroup>
@@ -276,18 +331,22 @@
       </table>
     </div>
 
+    <!-- MOBILE CARDS -->
+    <div class="card-list" id="cardList"></div>
+
     <div class="actions">
       <button class="add-btn" onclick="addRow()">
         <i class="ti ti-plus" aria-hidden="true"></i> Tambah Baris
       </button>
       <button class="chart-btn" onclick="toggleChart()">Buat Grafik</button>
+      <button class="clear-btn" onclick="clearAll()" title="Hapus semua data">
+        <i class="ti ti-trash" aria-hidden="true"></i> Reset
+      </button>
     </div>
 
     <div class="chart-section" id="chartSection">
       <div class="chart-title" id="chartTitle">Grafik Kenaikan Suhu</div>
-      <div class="chart-legend">
-        <span></span> Suhu (°C)
-      </div>
+      <div class="chart-legend"><span></span> Suhu (°C)</div>
       <div class="chart-canvas-wrap">
         <canvas id="tempChart" role="img" aria-label="Line chart kenaikan suhu tungku berdasarkan waktu pencatatan.">
           Grafik menampilkan data suhu tungku dari tabel di atas.
@@ -302,78 +361,214 @@
 
   <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.js"></script>
   <script>
+    const STORAGE_KEY = 'tungku-jurnal-v1';
     let rowCount = 0;
     let chartInstance = null;
+    let saveTimer = null;
 
+    /* ── TIME ── */
     function nowTimeStr() {
       const d = new Date();
       const pad = n => String(n).padStart(2, '0');
       return pad(d.getHours()) + ':' + pad(d.getMinutes());
     }
 
-    function addRow() {
-      rowCount++;
+    /* ── SAVE / LOAD ── */
+    function collectRows() {
+      const rows = [];
+      document.querySelectorAll('#tbody tr').forEach(tr => {
+        const id = tr.dataset.id;
+        rows.push({
+          id,
+          time:    document.getElementById('time-text-' + id)?.textContent.trim() || '',
+          suhu:    document.getElementById('suhu-' + id)?.value || '',
+          gas:     document.getElementById('gas-' + id)?.value || '',
+          catatan: document.getElementById('catatan-' + id)?.value || ''
+        });
+      });
+      return rows;
+    }
+
+    function saveData() {
+      const rows = collectRows();
+      localStorage.setItem(STORAGE_KEY, JSON.stringify({ rowCount, rows }));
+      const ind = document.getElementById('saveIndicator');
+      ind.textContent = 'tersimpan otomatis';
+      ind.classList.add('saved');
+      clearTimeout(saveTimer);
+      saveTimer = setTimeout(() => {
+        ind.textContent = '—';
+        ind.classList.remove('saved');
+      }, 2000);
+    }
+
+    function loadData() {
+      const raw = localStorage.getItem(STORAGE_KEY);
+      if (!raw) { addRow(); return; }
+      try {
+        const { rowCount: savedCount, rows } = JSON.parse(raw);
+        rowCount = savedCount || 0;
+        if (!rows || rows.length === 0) { addRow(); return; }
+        rows.forEach(r => renderRow(r.id, r.time, r.suhu, r.gas, r.catatan));
+        // make sure future addRow increments past saved ids
+        rowCount = Math.max(...rows.map(r => parseInt(r.id)), 0);
+      } catch(e) {
+        addRow();
+      }
+    }
+
+    function clearAll() {
+      if (!confirm('Hapus semua data jurnal di perangkat ini?')) return;
+      localStorage.removeItem(STORAGE_KEY);
+      document.getElementById('tbody').innerHTML = '';
+      document.getElementById('cardList').innerHTML = '';
+      rowCount = 0;
+      addRow();
+    }
+
+    /* ── RENDER ROW (used by both addRow and loadData) ── */
+    function renderRow(id, time, suhu, gas, catatan) {
+      id = String(id);
+
+      // Desktop
       const tbody = document.getElementById('tbody');
       const tr = document.createElement('tr');
-      tr.dataset.id = rowCount;
-      const id = rowCount;
-      const time = nowTimeStr();
+      tr.dataset.id = id;
       tr.innerHTML = `
         <td class="time-cell">
           <div class="time-display" id="time-display-${id}">
             <span class="time-text" id="time-text-${id}">${time}</span>
-            <button class="icon-btn" onclick="editTime(${id})" aria-label="edit waktu" title="Edit waktu">
+            <button class="icon-btn" onclick="editTime('${id}')" aria-label="edit waktu" title="Edit waktu">
               <i class="ti ti-pencil" aria-hidden="true"></i>
             </button>
           </div>
           <input type="time" id="time-input-${id}" value="${time}" style="display:none;"
-            onblur="saveTime(${id})" onkeydown="if(event.key==='Enter')saveTime(${id})" />
+            onblur="saveTime('${id}')" onkeydown="if(event.key==='Enter')saveTime('${id}')" />
         </td>
-        <td class="suhu-cell"><input type="number" placeholder="cth. 1100" min="0" max="9999" step="0.1" /></td>
-        <td><input type="text" placeholder="cth. 1/4 tabung" /></td>
-        <td><input type="text" placeholder="catatan opsional..." /></td>
+        <td class="suhu-cell">
+          <input type="number" id="suhu-${id}" value="${suhu}" placeholder="cth. 1100" min="0" max="9999" step="0.1" oninput="saveData()" />
+        </td>
+        <td>
+          <input type="text" id="gas-${id}" value="${gas}" placeholder="cth. 1/4 tabung" oninput="saveData()" />
+        </td>
+        <td>
+          <input type="text" id="catatan-${id}" value="${catatan}" placeholder="catatan opsional..." oninput="saveData()" />
+        </td>
         <td>
           <div class="act-cell">
-            <button class="icon-btn del" onclick="delRow(this)" aria-label="hapus baris" title="Hapus baris">
+            <button class="icon-btn del" onclick="delRow('${id}')" aria-label="hapus baris" title="Hapus baris">
               <i class="ti ti-trash" aria-hidden="true"></i>
             </button>
           </div>
         </td>
       `;
       tbody.appendChild(tr);
+
+      // Mobile
+      const cardList = document.getElementById('cardList');
+      const card = document.createElement('div');
+      card.className = 'entry-card';
+      card.dataset.id = id;
+      card.innerHTML = `
+        <div class="card-header">
+          <span class="card-num">ENTRI #${id}</span>
+          <button class="icon-btn del" onclick="delRow('${id}')" aria-label="hapus entri">
+            <i class="ti ti-trash" aria-hidden="true"></i>
+          </button>
+        </div>
+        <div class="card-body">
+          <div class="card-field">
+            <div class="card-label">WAKTU</div>
+            <div class="card-time-display" id="card-time-display-${id}">
+              <span class="card-time-text" id="card-time-text-${id}">${time}</span>
+              <button class="icon-btn" onclick="editTime('${id}')" aria-label="edit waktu">
+                <i class="ti ti-pencil" aria-hidden="true"></i>
+              </button>
+            </div>
+            <input type="time" id="card-time-input-${id}" value="${time}" style="display:none;"
+              onblur="saveTime('${id}')" onkeydown="if(event.key==='Enter')saveTime('${id}')" />
+          </div>
+          <div class="card-field">
+            <div class="card-label">SUHU (°C)</div>
+            <input type="number" id="card-suhu-${id}" value="${suhu}" placeholder="cth. 1100" min="0" max="9999" step="0.1"
+              oninput="syncFromCard('${id}','suhu',this.value)" />
+          </div>
+          <div class="card-field">
+            <div class="card-label">ISI GAS</div>
+            <input type="text" id="card-gas-${id}" value="${gas}" placeholder="cth. 1/4 tabung"
+              oninput="syncFromCard('${id}','gas',this.value)" />
+          </div>
+          <div class="card-field">
+            <div class="card-label">CATATAN</div>
+            <input type="text" id="card-catatan-${id}" value="${catatan}" placeholder="catatan opsional..."
+              oninput="syncFromCard('${id}','catatan',this.value)" />
+          </div>
+        </div>
+      `;
+      cardList.appendChild(card);
     }
 
+    /* mobile → desktop sync so collectRows() always reads desktop fields */
+    function syncFromCard(id, field, val) {
+      const el = document.getElementById(field + '-' + id);
+      if (el) el.value = val;
+      saveData();
+    }
+
+    /* ── ADD ROW ── */
+    function addRow() {
+      rowCount++;
+      renderRow(rowCount, nowTimeStr(), '', '', '');
+      saveData();
+    }
+
+    /* ── TIME EDIT ── */
     function editTime(id) {
-      const display = document.getElementById('time-display-' + id);
-      const input = document.getElementById('time-input-' + id);
-      display.style.display = 'none';
-      input.style.display = 'block';
-      input.focus();
+      const disp = document.getElementById('time-display-' + id);
+      const inp  = document.getElementById('time-input-' + id);
+      if (disp && inp) { disp.style.display = 'none'; inp.style.display = 'block'; inp.focus(); }
+      const cDisp = document.getElementById('card-time-display-' + id);
+      const cInp  = document.getElementById('card-time-input-' + id);
+      if (cDisp && cInp) { cDisp.style.display = 'none'; cInp.style.display = 'block'; cInp.focus(); }
     }
 
     function saveTime(id) {
-      const display = document.getElementById('time-display-' + id);
-      const input = document.getElementById('time-input-' + id);
-      const textEl = document.getElementById('time-text-' + id);
-      const val = input.value;
-      if (val) textEl.textContent = val;
-      input.style.display = 'none';
-      display.style.display = 'flex';
+      const inp  = document.getElementById('time-input-' + id);
+      const cInp = document.getElementById('card-time-input-' + id);
+      const val  = (inp?.value) || (cInp?.value) || '';
+
+      const textEl  = document.getElementById('time-text-' + id);
+      const disp    = document.getElementById('time-display-' + id);
+      if (textEl && val) textEl.textContent = val;
+      if (inp)  inp.style.display  = 'none';
+      if (disp) disp.style.display = 'flex';
+
+      const cTextEl = document.getElementById('card-time-text-' + id);
+      const cDisp   = document.getElementById('card-time-display-' + id);
+      if (cTextEl && val) cTextEl.textContent = val;
+      if (cInp)  cInp.style.display  = 'none';
+      if (cDisp) cDisp.style.display = 'flex';
+
+      saveData();
     }
 
-    function delRow(btn) {
-      btn.closest('tr').remove();
+    /* ── DELETE ── */
+    function delRow(id) {
+      const tr = document.querySelector('#tbody tr[data-id="' + id + '"]');
+      if (tr) tr.remove();
+      const card = document.querySelector('.entry-card[data-id="' + id + '"]');
+      if (card) card.remove();
+      saveData();
     }
 
+    /* ── CHART ── */
     function getChartData() {
-      const rows = document.querySelectorAll('#tbody tr');
-      const labels = [];
-      const values = [];
-      rows.forEach(r => {
-        const suhu = parseFloat(r.querySelector('td:nth-child(2) input').value);
+      const labels = [], values = [];
+      document.querySelectorAll('#tbody tr').forEach(tr => {
+        const id = tr.dataset.id;
+        const suhu = parseFloat(document.getElementById('suhu-' + id)?.value);
         if (!isNaN(suhu)) {
-          const timeText = r.querySelector('.time-text');
-          labels.push(timeText ? timeText.textContent.trim() : '');
+          labels.push(document.getElementById('time-text-' + id)?.textContent.trim() || '');
           values.push(suhu);
         }
       });
@@ -381,7 +576,7 @@
     }
 
     function toggleChart() {
-      const sec = document.getElementById('chartSection');
+      const sec     = document.getElementById('chartSection');
       const titleEl = document.getElementById('chartTitle');
       const { labels, values } = getChartData();
 
@@ -405,7 +600,7 @@
             label: 'Suhu (°C)',
             data: values,
             borderColor: '#1a3a8f',
-            backgroundColor: 'rgba(26, 58, 143, 0.10)',
+            backgroundColor: 'rgba(26,58,143,0.10)',
             pointBackgroundColor: '#1a3a8f',
             pointBorderColor: '#fff',
             pointBorderWidth: 2,
@@ -421,37 +616,24 @@
           maintainAspectRatio: false,
           plugins: {
             legend: { display: false },
-            tooltip: {
-              callbacks: {
-                label: ctx => ' ' + ctx.parsed.y.toFixed(1) + ' °C'
-              }
-            }
+            tooltip: { callbacks: { label: c => ' ' + c.parsed.y.toFixed(1) + ' °C' } }
           },
           scales: {
             x: {
-              ticks: {
-                font: { family: 'Inter', size: 11 },
-                color: '#4a5e9e',
-                maxRotation: 30,
-                autoSkip: true,
-                maxTicksLimit: 10
-              },
-              grid: { color: 'rgba(26, 58, 143, 0.07)' }
+              ticks: { font: { family: 'Inter', size: 11 }, color: '#4a5e9e', maxRotation: 30, autoSkip: true, maxTicksLimit: 10 },
+              grid: { color: 'rgba(26,58,143,0.07)' }
             },
             y: {
-              ticks: {
-                font: { family: 'Inter', size: 11 },
-                color: '#4a5e9e',
-                callback: v => v + ' °C'
-              },
-              grid: { color: 'rgba(26, 58, 143, 0.07)' }
+              ticks: { font: { family: 'Inter', size: 11 }, color: '#4a5e9e', callback: v => v + ' °C' },
+              grid: { color: 'rgba(26,58,143,0.07)' }
             }
           }
         }
       });
     }
 
-    addRow();
+    /* ── INIT ── */
+    loadData();
   </script>
 </body>
 </html>
