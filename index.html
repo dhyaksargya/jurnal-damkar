@@ -53,6 +53,37 @@
     .save-indicator.saved { color: #3a8f5a; }
 
     /* ── DESKTOP TABLE ── */
+    .session-title-wrap {
+      margin-bottom: 10px;
+      display: flex;
+      justify-content: center;
+    }
+
+    .session-title-input {
+      font-family: 'Inter', sans-serif;
+      font-size: 13px;
+      font-weight: 500;
+      color: #1a3a8f;
+      letter-spacing: 1px;
+      border: none;
+      border-bottom: 1.5px solid #a0b4e8;
+      background: transparent;
+      outline: none;
+      padding: 4px 2px;
+      width: 320px;
+      text-align: center;
+      transition: border-color 0.15s;
+    }
+    .session-title-input:focus { border-bottom-color: #1a3a8f; }
+    .session-title-input::placeholder { color: #b0c0e0; letter-spacing: 1px; }
+
+    .chart-date {
+      font-size: 12px;
+      color: #8fa0cc;
+      letter-spacing: 1px;
+      margin-bottom: 4px;
+    }
+
     .tbl-wrap { overflow-x: auto; border: 2px solid #1a3a8f; }
 
     table {
@@ -353,6 +384,13 @@
     <p class="subtitle">sebuah jurnal damkar (dalam membakar keramik)</p>
     <p class="save-indicator" id="saveIndicator">—</p>
 
+    <!-- SESSION TITLE -->
+    <div class="session-title-wrap">
+      <input class="session-title-input" id="sessionTitle" type="text"
+        placeholder="judul sesi pembakaran... (opsional)"
+        oninput="saveData()" />
+    </div>
+
     <!-- DESKTOP TABLE -->
     <div class="tbl-wrap">
       <table id="tbl">
@@ -393,6 +431,7 @@
     </div>
 
     <div class="chart-section" id="chartSection">
+      <div class="chart-date" id="chartDate"></div>
       <div class="chart-title" id="chartTitle">Grafik Kenaikan Suhu</div>
       <div class="chart-legend"><span></span> Suhu (°C)</div>
       <div class="chart-canvas-wrap">
@@ -439,7 +478,8 @@
 
     function saveData() {
       const rows = collectRows();
-      localStorage.setItem(STORAGE_KEY, JSON.stringify({ rowCount, rows }));
+      const title = document.getElementById('sessionTitle')?.value || '';
+      localStorage.setItem(STORAGE_KEY, JSON.stringify({ rowCount, rows, title }));
       const ind = document.getElementById('saveIndicator');
       ind.textContent = 'tersimpan otomatis';
       ind.classList.add('saved');
@@ -454,8 +494,9 @@
       const raw = localStorage.getItem(STORAGE_KEY);
       if (!raw) { addRow(); return; }
       try {
-        const { rowCount: savedCount, rows } = JSON.parse(raw);
+        const { rowCount: savedCount, rows, title } = JSON.parse(raw);
         rowCount = savedCount || 0;
+        if (title) document.getElementById('sessionTitle').value = title;
         if (!rows || rows.length === 0) { addRow(); return; }
         rows.forEach(r => renderRow(r.id, r.time, r.suhu, r.gas, r.catatan));
         // make sure future addRow increments past saved ids
@@ -626,9 +667,16 @@
     function toggleChart() {
       const sec     = document.getElementById('chartSection');
       const titleEl = document.getElementById('chartTitle');
+      const dateEl  = document.getElementById('chartDate');
       const { labels, values } = getChartData();
 
       sec.classList.add('visible');
+
+      // tampilkan tanggal hari ini
+      const now = new Date();
+      const pad = n => String(n).padStart(2,'0');
+      const tgl = pad(now.getDate()) + '/' + pad(now.getMonth()+1) + '/' + now.getFullYear();
+      dateEl.textContent = tgl;
 
       if (values.length === 0) {
         titleEl.textContent = 'Grafik Kenaikan Suhu — belum ada data suhu yang diisi.';
@@ -636,7 +684,8 @@
         return;
       }
 
-      titleEl.textContent = 'Grafik Kenaikan Suhu';
+      const sesi = document.getElementById('sessionTitle')?.value?.trim();
+      titleEl.textContent = sesi ? 'Grafik Kenaikan Suhu — ' + sesi : 'Grafik Kenaikan Suhu';
       const ctx = document.getElementById('tempChart').getContext('2d');
       if (chartInstance) chartInstance.destroy();
 
@@ -692,6 +741,7 @@
       const pad = n => String(n).padStart(2,'0');
       const tgl = pad(now.getDate())+'/'+pad(now.getMonth()+1)+'/'+now.getFullYear();
       const jam = pad(now.getHours())+':'+pad(now.getMinutes());
+      const sesi = document.getElementById('sessionTitle')?.value?.trim();
 
       const pageW = doc.internal.pageSize.getWidth();
 
@@ -705,7 +755,20 @@
       doc.setFontSize(8);
       doc.setTextColor(107, 128, 184);
       doc.text('sebuah jurnal damkar (dalam membakar keramik)', pageW/2, 24, { align: 'center' });
-      doc.text('dicetak: ' + tgl + ' ' + jam, pageW/2, 29, { align: 'center' });
+
+      let startY = 29;
+      if (sesi) {
+        doc.setFont('helvetica','bold');
+        doc.setFontSize(10);
+        doc.setTextColor(26, 58, 143);
+        doc.text(sesi, pageW/2, 30, { align: 'center' });
+        startY = 35;
+        doc.setFont('helvetica','normal');
+        doc.setFontSize(8);
+        doc.setTextColor(107, 128, 184);
+      }
+      doc.text('dicetak: ' + tgl + ' ' + jam, pageW/2, startY + 1, { align: 'center' });
+      startY += 6;
 
       // Collect rows
       const rows = collectRows();
@@ -717,7 +780,7 @@
       doc.autoTable({
         head,
         body,
-        startY: 34,
+        startY: startY,
         theme: 'grid',
         styles: {
           font: 'helvetica',
