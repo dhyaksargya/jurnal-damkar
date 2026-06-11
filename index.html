@@ -150,16 +150,14 @@
 
     .card-num { font-size: 11px; font-weight: 600; letter-spacing: 2px; color: #8fa0cc; }
 
-    .card-body { display: grid; grid-template-columns: 1fr 1fr; gap: 0; }
+    .card-body { display: flex; flex-direction: column; }
 
     .card-field {
-      padding: 10px 12px;
-      border-right: 1px solid rgba(26, 58, 143, 0.1);
-      border-bottom: 1px solid rgba(26, 58, 143, 0.1);
+      padding: 10px 14px;
+      border-bottom: 1px solid rgba(26, 58, 143, 0.08);
     }
-    .card-field:nth-child(2n) { border-right: none; }
-    .card-field:nth-last-child(-n+2) { border-bottom: none; }
-    .card-field.full { grid-column: 1 / -1; border-right: none; }
+    .card-field:last-child { border-bottom: none; }
+    .card-field.full { border-right: none; }
 
     .card-label {
       font-size: 10px;
@@ -292,11 +290,39 @@
 
     /* ── RESPONSIVE ── */
     @media (max-width: 600px) {
-      body { padding: 28px 14px 50px; }
-      h1 { font-size: 18px; letter-spacing: 4px; }
-      .subtitle { font-size: 10px; letter-spacing: 3px; }
-      .tbl-wrap { display: none; }
-      .card-list { display: block; }
+      body { padding: 20px 8px 50px; }
+      h1 { font-size: 16px; letter-spacing: 3px; }
+      .subtitle { font-size: 9px; letter-spacing: 2px; }
+
+      .tbl-wrap { display: block; }
+      .card-list { display: none; }
+
+      table { font-size: 11px; }
+
+      colgroup col.c-waktu   { width: 52px; }
+      colgroup col.c-suhu    { width: 56px; }
+      colgroup col.c-gas     { width: 64px; }
+      colgroup col.c-catatan { width: auto; }
+      colgroup col.c-act     { width: 30px; }
+
+      thead th {
+        font-size: 9px;
+        padding: 8px 5px;
+        letter-spacing: 1px;
+      }
+
+      tbody td { padding: 5px 5px; }
+
+      tbody td input[type="text"],
+      tbody td input[type="number"],
+      tbody td input[type="time"] {
+        font-size: 11px;
+        padding: 4px 5px;
+      }
+
+      .time-text { font-size: 11px; }
+      .icon-btn { font-size: 13px; padding: 2px 3px; }
+
       .actions { flex-direction: column; }
       .add-btn, .chart-btn, .clear-btn { width: 100%; justify-content: center; }
     }
